@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         val retrofit = api.retrofit
 
         val service = retrofit.create(GetWeatherData::class.java)
-        val call = service.loadWeatherData("data/2.5/weather/?q=London&appid=a8988c436c0a8a587b08b3e4a2e84b2f")
+        val call = service.loadWeatherData("data/2.5/weather/?q=London&appid=${Const.KEY}")
         Log.d("call", "URL: ${call.request()}")
 
         call.enqueue(object : Callback<WeatherData> {
