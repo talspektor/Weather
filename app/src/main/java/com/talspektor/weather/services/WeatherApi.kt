@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class WeatherApi {
 
     companion object {
-        const val BASE_URL = "https://api.openweathermap.org/"
+        const val BASE_URL = "https://api.openweathermap.org/data/2.5/weather/"
     }
 
     private val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
