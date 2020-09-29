@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 app/src/main/java/com/talspektor/weather/Const.kt
+app/src/main/java/com/talspektor/weather/Keys.kt
