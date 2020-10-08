@@ -1,10 +1,9 @@
 package com.talspektor.weather.fragments
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import com.talspektor.weather.model.WeatherData
+import com.talspektor.weather.model.CityWeatherData
 
 class DetailsViewModel : ViewModel() {
 
-    lateinit var weatherItems: MutableList<WeatherData>
+    lateinit var weatherItems: MutableList<CityWeatherData>
 }

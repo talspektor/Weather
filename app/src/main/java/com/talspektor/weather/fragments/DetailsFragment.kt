@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.talspektor.weather.Keys
 import com.talspektor.weather.R
 import com.talspektor.weather.controllers.DetailsWeatherAdapter
-import com.talspektor.weather.model.WeatherData
-import com.talspektor.weather.services.GetWeatherData
+import com.talspektor.weather.model.CityWeatherData
+import com.talspektor.weather.model.ForecastData
+import com.talspektor.weather.model.ForecastList
+import com.talspektor.weather.services.GetCurrentWeatherData
+import com.talspektor.weather.services.GetWeatherForecast
 import com.talspektor.weather.services.WeatherApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,29 +40,51 @@ class DetailsFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
         context?.let {
-            recyclerAdapter = DetailsWeatherAdapter(it, viewModel.weatherItems)
+//            recyclerAdapter = DetailsWeatherAdapter(it, viewModel.weatherItems)
         }
         // TODO: Use the ViewModel
 
-        val api = WeatherApi()
+        val api = WeatherApi(WeatherApi.UrlPrefix.API)
         val retrofit = api.retrofit
 
-        val service = retrofit.create(GetWeatherData::class.java)
-        val call = service.loadWeatherData("?q=London&appid=${Keys.KEY}")
-        Log.d("call", "URL: ${call.request()}")
+        val service = retrofit.create(GetCurrentWeatherData::class.java)
+        val forecastService = retrofit.create(GetWeatherForecast::class.java)
+        val call = service.getCityByNameWeather("London")
+        val call2 = forecastService.getHourlyForecastByCityName("London")
 
-        call.enqueue(object : Callback<WeatherData> {
-            override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
+        Log.d("call", "URL: ${call.request()}")
+        Log.d("forecastService", "URL: ${call2.request().url.toUri()}")
+
+        call2.enqueue(object : Callback<ForecastData>{
+            override fun onFailure(call: Call<ForecastData>, t: Throwable) {
+                Log.d("onFailure", "fail")
+            }
+
+            override fun onResponse(
+                call: Call<ForecastData>,
+                response: Response<ForecastData>
+            ) {
                 val weatherModel = response.body()
                 weatherModel?.let {
-                    viewModel.weatherItems?.add(weatherModel)
+                    print(weatherModel.toString())
                 }
             }
 
-            override fun onFailure(call: Call<WeatherData>, t: Throwable) {
-                Log.d("onFailure", "fail")
-            }
         })
+
+
+//        call.enqueue(object : Callback<CityWeatherData> {
+//            override fun onResponse(call: Call<CityWeatherData>, response: Response<CityWeatherData>) {
+//                val weatherModel = response.body()
+//                weatherModel?.let {
+//                    viewModel.weatherItems?.add(weatherModel)
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CityWeatherData>, t: Throwable) {
+//                Log.d("onFailure", "fail")
+//            }
+//        })
     }
 
 }

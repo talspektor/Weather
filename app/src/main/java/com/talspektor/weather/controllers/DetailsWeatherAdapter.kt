@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.talspektor.weather.R
-import com.talspektor.weather.model.WeatherData
+import com.talspektor.weather.model.CityWeatherData
 import kotlinx.android.synthetic.main.weather_item.view.*
 
-class DetailsWeatherAdapter(private val context: Context, private var weatherItems: List<WeatherData>?): RecyclerView.Adapter<DetailsWeatherAdapter.ViewHolder>() {
+class DetailsWeatherAdapter(private val context: Context, private var weatherItems: List<CityWeatherData>?): RecyclerView.Adapter<DetailsWeatherAdapter.ViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
 

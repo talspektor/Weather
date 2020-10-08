@@ -5,24 +5,27 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class WeatherApi {
+class WeatherApi(prefix: UrlPrefix) {
 
-    companion object {
-        const val BASE_URL = "https://api.openweathermap.org/data/2.5/weather/"
+    enum class UrlPrefix(val prefix: String) {
+        API("api"),
+        PRO("pro")
     }
 
-    private val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         this.level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client : OkHttpClient = OkHttpClient.Builder().apply {
+    private val client: OkHttpClient = OkHttpClient.Builder().apply {
         this.addInterceptor(interceptor)
     }.build()
 
+    private val  mBaseUrl = "https://$prefix.openweathermap.org/data/2.5/"
+
     val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
+        .baseUrl(mBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(client)
+        .build()
 
 }
